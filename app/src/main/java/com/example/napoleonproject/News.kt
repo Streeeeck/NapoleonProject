@@ -26,6 +26,14 @@ class News {
         arrayOfNews.sorting("date")
 
     }
+    fun lastNews(): OneNews{
+        val tmp = arrayOfNews
+        tmp.sorting("date")
+        return tmp[tmp.size-1]
+    }
+    fun searchByString(ob: OneNews): Int {
+        return arrayOfNews.indexOf(ob)
+    }
 
     override fun toString(): String {
         var str = ""
@@ -35,5 +43,6 @@ class News {
         }
         return str
     }
+
 
 }

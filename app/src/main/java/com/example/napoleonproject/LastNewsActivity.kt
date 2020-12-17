@@ -1,43 +1,41 @@
 package com.example.napoleonproject
 
+import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
-import android.view.View
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_lastnews.*
 
 
-class MainActivity : AppCompatActivity() {
-    var news = News()
-    private val TAG = "MainActivity"
+class LastNewsActivity: AppCompatActivity() {
+    private val TAG = "LastNewsActivity"
+     lateinit var oneN : OneNews
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        news.Testinit()
-
-        ETList.text = Editable.Factory.getInstance().newEditable(news.toString())
-
+        setContentView(R.layout.activity_lastnews)
+        oneN = intent.extras?.getSerializable("oneN") as OneNews
+        TWDate.text = oneN.date
+        TWRes.text = oneN.res
+        TWHead.text = oneN.head
+        TWText.text = oneN.text
 
     }
-    fun openLastNews(view : View){
-        val intent = Intent(this, LastNewsActivity::class.java)
-        intent.putExtra("oneN", news.lastNews())
-        startActivityForResult(intent, 1);
+
+    override fun finish() {
+        val intent = Intent()
+        intent.putExtra("checked", true)
+        intent.putExtra("id", oneN )
+        setResult(Activity.RESULT_OK, intent)
+        super.finish()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == RESULT_OK) {
-            var t = news.searchByString(data?.getSerializableExtra("id") as OneNews)
-            news.arrayOfNews[t].checked = true
-            ETList.text = Editable.Factory.getInstance().newEditable(news.toString())
 
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
+
+
+
 
     override fun onStart() {
         super.onStart()
@@ -78,10 +76,5 @@ class MainActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         Log.d(TAG, "onRestoreInstanceState")
     }
-
-
-
-
-
 
 }
